@@ -1,864 +1,893 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>once8 - Alquiler profesional de equipos de audio</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            line-height: 1.6;
-            color: #1a1a1a;
-            background: #ffffff;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        /* Header */
-        header {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-            z-index: 1000;
-            transition: all 0.3s ease;
-        }
-
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem 0;
-        }
-
-        .logo {
-            font-size: 1.5rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .nav-links {
-            display: flex;
-            list-style: none;
-            gap: 2rem;
-        }
-
-        .nav-links a {
-            text-decoration: none;
-            color: #4a5568;
-            font-weight: 500;
-            transition: color 0.3s ease;
-        }
-
-        .nav-links a:hover {
-            color: #667eea;
-        }
-
-        .cta-button {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 0.75rem 1.5rem;
-            border: none;
-            border-radius: 50px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            display: inline-block;
-        }
-
-        .cta-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
-        }
-
-        .mobile-menu {
-            display: none;
-            flex-direction: column;
-            cursor: pointer;
-        }
-
-        .mobile-menu span {
-            width: 25px;
-            height: 3px;
-            background: #4a5568;
-            margin: 3px 0;
-            transition: 0.3s;
-        }
-
-        /* Hero Section */
-        .hero {
-            padding: 120px 0 80px;
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            background-attachment: fixed;
-            color: white;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><defs><radialGradient id="a" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="rgba(255,255,255,0.1)"/><stop offset="100%" stop-color="rgba(255,255,255,0)"/></radialGradient></defs><circle cx="200" cy="200" r="100" fill="url(%23a)"/><circle cx="800" cy="300" r="150" fill="url(%23a)"/><circle cx="400" cy="700" r="120" fill="url(%23a)"/></svg>');
-            animation: float 6s ease-in-out infinite;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-20px); }
-        }
-
-        .hero-content {
-            position: relative;
-            z-index: 2;
-        }
-
-        .hero h1 {
-            font-size: 3.5rem;
-            font-weight: 800;
-            margin-bottom: 1rem;
-            animation: fadeInUp 1s ease-out;
-        }
-
-        .hero p {
-            font-size: 1.25rem;
-            margin-bottom: 2rem;
-            opacity: 0.9;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-            animation: fadeInUp 1s ease-out 0.2s both;
-        }
-
-        .hero-cta {
-            background: white;
-            color: #667eea;
-            padding: 1rem 2rem;
-            border: none;
-            border-radius: 50px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            animation: fadeInUp 1s ease-out 0.4s both;
-        }
-
-        .hero-cta:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Features Section */
-        .features {
-            padding: 80px 0;
-            background: #f8fafc;
-        }
-
-        .section-title {
-            text-align: center;
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin-bottom: 3rem;
-            color: #2d3748;
-        }
-
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
-            margin-top: 3rem;
-        }
-
-        .feature-card {
-            background: white;
-            padding: 2rem;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
-            text-align: center;
-        }
-
-        .feature-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
-        }
-
-        .feature-icon {
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 1rem;
-            font-size: 1.5rem;
-            color: white;
-        }
-
-        .feature-card h3 {
-            font-size: 1.25rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
-            color: #2d3748;
-        }
-
-        .feature-card p {
-            color: #718096;
-            line-height: 1.6;
-        }
-
-        /* Testimonials */
-        .testimonials {
-            padding: 80px 0;
-            background: white;
-        }
-
-        .testimonials-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-top: 3rem;
-        }
-
-        .testimonial-card {
-            background: #f8fafc;
-            padding: 2rem;
-            border-radius: 20px;
-            border-left: 4px solid #667eea;
-            transition: all 0.3s ease;
-        }
-
-        .testimonial-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
-        }
-
-        .testimonial-text {
-            font-style: italic;
-            margin-bottom: 1rem;
-            color: #4a5568;
-            font-size: 1.1rem;
-        }
-
-        .testimonial-author {
-            font-weight: 600;
-            color: #2d3748;
-        }
-
-        .testimonial-role {
-            color: #718096;
-            font-size: 0.9rem;
-        }
-
-        /* Pricing */
-        .pricing {
-            padding: 80px 0;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-        }
-
-        .pricing-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
-            margin-top: 3rem;
-        }
-
-        .pricing-card {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            padding: 2rem;
-            border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            text-align: center;
-            transition: all 0.3s ease;
-        }
-
-        .pricing-card:hover {
-            transform: translateY(-10px);
-            background: rgba(255, 255, 255, 0.15);
-        }
-
-        .pricing-card.popular {
-            transform: scale(1.05);
-            background: rgba(255, 255, 255, 0.2);
-            border: 2px solid rgba(255, 255, 255, 0.5);
-        }
-
-        .pricing-card h3 {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .pricing-price {
-            font-size: 3rem;
-            font-weight: 800;
-            margin-bottom: 0.5rem;
-        }
-
-        .pricing-period {
-            opacity: 0.8;
-            margin-bottom: 2rem;
-        }
-
-        .pricing-features {
-            list-style: none;
-            margin-bottom: 2rem;
-        }
-
-        .pricing-features li {
-            padding: 0.5rem 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .pricing-button {
-            background: white;
-            color: #667eea;
-            padding: 1rem 2rem;
-            border: none;
-            border-radius: 50px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            width: 100%;
-        }
-
-        .pricing-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-        }
-
-        /* Final CTA */
-        .final-cta {
-            padding: 80px 0;
-            background: #1a202c;
-            color: white;
-            text-align: center;
-        }
-
-        .final-cta h2 {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .final-cta p {
-            font-size: 1.2rem;
-            margin-bottom: 2rem;
-            opacity: 0.9;
-        }
-
-        /* Footer */
-        footer {
-            background: #2d3748;
-            color: white;
-            padding: 3rem 0 1rem;
-        }
-
-        .footer-content {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-            margin-bottom: 2rem;
-        }
-
-        .footer-section h3 {
-            margin-bottom: 1rem;
-            color: #e2e8f0;
-        }
-
-        .footer-section ul {
-            list-style: none;
-        }
-
-        .footer-section a {
-            color: #a0aec0;
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-
-        .footer-section a:hover {
-            color: #667eea;
-        }
-
-        .social-icons {
-            display: flex;
-            gap: 1rem;
-            margin-top: 1rem;
-        }
-
-        .social-icon {
-            width: 40px;
-            height: 40px;
-            background: #4a5568;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            color: white;
-        }
-
-        .social-icon:hover {
-            background: #667eea;
-            transform: translateY(-2px);
-        }
-
-        .footer-bottom {
-            border-top: 1px solid #4a5568;
-            padding-top: 2rem;
-            text-align: center;
-            color: #a0aec0;
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .nav-links {
-                display: none;
-            }
-
-            .mobile-menu {
-                display: flex;
-            }
-
-            .hero h1 {
-                font-size: 2.5rem;
-            }
-
-            .hero p {
-                font-size: 1.1rem;
-            }
-
-            .section-title {
-                font-size: 2rem;
-            }
-
-            .pricing-card.popular {
-                transform: none;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .container {
-                padding: 0 15px;
-            }
-
-            .hero {
-                padding: 100px 0 60px;
-            }
-
-            .hero h1 {
-                font-size: 2rem;
-            }
-
-            .features,
-            .testimonials,
-            .pricing,
-            .final-cta {
-                padding: 60px 0;
-            }
-        }
-
-        /* Scroll animations */
-        .fade-in {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.6s ease;
-        }
-
-        .fade-in.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>once8 - Alquiler profesional de equipos de audio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: "Geist", sans-serif;
+      font-optical-sizing: auto;
+      font-weight: 400;
+      font-style: normal;
+      /* font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; */
+      line-height: 1.6;
+      color: #1a1a1a;
+      background: #ffffff;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* Header */
+    header {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+      z-index: 1000;
+      transition: all 0.3s ease;
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 0;
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .nav-links {
+      display: flex;
+      list-style: none;
+      gap: 2rem;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: #4a5568;
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+
+    .nav-links a:hover {
+      color: #667eea;
+    }
+
+    .cta-button {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: 50px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .cta-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+    }
+
+    .mobile-menu {
+      display: none;
+      flex-direction: column;
+      cursor: pointer;
+    }
+
+    .mobile-menu span {
+      width: 25px;
+      height: 3px;
+      background: #4a5568;
+      margin: 3px 0;
+      transition: 0.3s;
+    }
+
+    /* Hero Section */
+    .hero {
+      padding: 120px 0 80px;
+      background: linear-gradient(135deg, #38063e 0%, #260409 100%);
+      background-attachment: fixed;
+      color: white;
+      text-align: center;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><defs><radialGradient id="a" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="rgba(255,255,255,0.1)"/><stop offset="100%" stop-color="rgba(255,255,255,0)"/></radialGradient></defs><circle cx="200" cy="200" r="100" fill="url(%23a)"/><circle cx="800" cy="300" r="150" fill="url(%23a)"/><circle cx="400" cy="700" r="120" fill="url(%23a)"/></svg>');
+      animation: float 6s ease-in-out infinite;
+    }
+
+    @keyframes float {
+
+      0%,
+      100% {
+        transform: translateY(0px);
+      }
+
+      50% {
+        transform: translateY(-20px);
+      }
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero h1 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      margin-bottom: 1rem;
+      animation: fadeInUp 1s ease-out;
+    }
+
+    .hero p {
+      font-size: 1.25rem;
+      margin-bottom: 2rem;
+      opacity: 0.9;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+      animation: fadeInUp 1s ease-out 0.2s both;
+    }
+
+    .hero-cta {
+      background: white;
+      color: #667eea;
+      padding: 1rem 2rem;
+      border: none;
+      border-radius: 50px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      animation: fadeInUp 1s ease-out 0.4s both;
+    }
+
+    .hero-cta:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Features Section */
+    .features {
+      padding: 180px 0;
+      background: #333;
+    }
+
+    .section-title {
+      text-align: center;
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 3rem;
+      color: #fff;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+      margin-top: 3rem;
+    }
+
+    .feature-card {
+      background: white;
+      padding: 2rem;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+      text-align: center;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    }
+
+    .feature-icon {
+      width: 60px;
+      height: 60px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1rem;
+      font-size: 1.5rem;
+      color: white;
+    }
+
+    .feature-card h3 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      color: #2d3748;
+    }
+
+    .feature-card p {
+      color: #718096;
+      line-height: 1.6;
+    }
+
+    /* Testimonials */
+    .testimonials {
+      padding: 80px 0;
+      background: white;
+    }
+
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      margin-top: 3rem;
+    }
+
+    .testimonial-card {
+      background: #f8fafc;
+      padding: 2rem;
+      border-radius: 20px;
+      border-left: 4px solid #667eea;
+      transition: all 0.3s ease;
+    }
+
+    .testimonial-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    .testimonial-text {
+      font-style: italic;
+      margin-bottom: 1rem;
+      color: #4a5568;
+      font-size: 1.1rem;
+    }
+
+    .testimonial-author {
+      font-weight: 600;
+      color: #2d3748;
+    }
+
+    .testimonial-role {
+      color: #718096;
+      font-size: 0.9rem;
+    }
+
+    /* Pricing */
+    .pricing {
+      padding: 80px 0;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+    }
+
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+      margin-top: 3rem;
+    }
+
+    .pricing-card {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      padding: 2rem;
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      text-align: center;
+      transition: all 0.3s ease;
+    }
+
+    .pricing-card:hover {
+      transform: translateY(-10px);
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    .pricing-card.popular {
+      transform: scale(1.05);
+      background: rgba(255, 255, 255, 0.2);
+      border: 2px solid rgba(255, 255, 255, 0.5);
+    }
+
+    .pricing-card h3 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .pricing-price {
+      font-size: 3rem;
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+    }
+
+    .pricing-period {
+      opacity: 0.8;
+      margin-bottom: 2rem;
+    }
+
+    .pricing-features {
+      list-style: none;
+      margin-bottom: 2rem;
+    }
+
+    .pricing-features li {
+      padding: 0.5rem 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .pricing-button {
+      background: white;
+      color: #667eea;
+      padding: 1rem 2rem;
+      border: none;
+      border-radius: 50px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      width: 100%;
+    }
+
+    .pricing-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Final CTA */
+    .final-cta {
+      padding: 80px 0;
+      background: #1a202c;
+      color: white;
+      text-align: center;
+    }
+
+    .final-cta h2 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .final-cta p {
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+      opacity: 0.9;
+    }
+
+    /* Footer */
+    footer {
+      background: #2d3748;
+      color: white;
+      padding: 3rem 0 1rem;
+    }
+
+    .footer-content {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .footer-section h3 {
+      margin-bottom: 1rem;
+      color: #e2e8f0;
+    }
+
+    .footer-section ul {
+      list-style: none;
+    }
+
+    .footer-section a {
+      color: #a0aec0;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .footer-section a:hover {
+      color: #667eea;
+    }
+
+    .social-icons {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .social-icon {
+      width: 40px;
+      height: 40px;
+      background: #4a5568;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      color: white;
+    }
+
+    .social-icon:hover {
+      background: #667eea;
+      transform: translateY(-2px);
+    }
+
+    .footer-bottom {
+      border-top: 1px solid #4a5568;
+      padding-top: 2rem;
+      text-align: center;
+      color: #a0aec0;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+      }
+
+      .mobile-menu {
+        display: flex;
+      }
+
+      .hero h1 {
+        font-size: 2.5rem;
+      }
+
+      .hero p {
+        font-size: 1.1rem;
+      }
+
+      .section-title {
+        font-size: 2rem;
+      }
+
+      .pricing-card.popular {
+        transform: none;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .container {
+        padding: 0 15px;
+      }
+
+      .hero {
+        padding: 100px 0 60px;
+      }
+
+      .hero h1 {
+        font-size: 2rem;
+      }
+
+      .features,
+      .testimonials,
+      .pricing,
+      .final-cta {
+        padding: 60px 0;
+      }
+    }
+
+    /* Scroll animations */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.6s ease;
+    }
+
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
 </head>
+
 <body>
-    <!-- Header -->
-    <header>
-        <div class="container">
-            <nav>
-                <div class="logo">once8</div>
-                <ul class="nav-links">
-                    <li><a href="#inicio">Inicio</a></li>
-                                            <li><a href="#equipos">Equipos</a></li>
-                    <li><a href="#testimonios">Testimonios</a></li>
-                    <li><a href="#precios">Precios</a></li>
-                    <li><a href="#contacto">Contacto</a></li>
-                </ul>
-                <a href="#cotizacion" class="cta-button">Cotizar Evento</a>
-                <div class="mobile-menu">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </div>
-            </nav>
+  <!-- Header -->
+  <header>
+    <div class="container">
+      <nav>
+        <div class="logo">ONCE8</div>
+        <ul class="nav-links">
+          <li><a href="#inicio">Inicio</a></li>
+          <li><a href="#equipos">Equipos</a></li>
+          <li><a href="#testimonios">Testimonios</a></li>
+          <li><a href="#contacto">Contacto</a></li>
+        </ul>
+        <a href="#cotizacion" class="cta-button">Cotizar Evento</a>
+        <div class="mobile-menu">
+          <span></span>
+          <span></span>
+          <span></span>
         </div>
-    </header>
+      </nav>
+    </div>
+  </header>
 
-    <!-- Hero Section -->
-    <section class="hero" id="inicio">
-        <div class="container">
-            <div class="hero-content">
-                <h1>Sonido profesional para cada evento con once8</h1>
-                <p>Alquila equipos de audio de alta calidad para conciertos, eventos corporativos, bodas y producciones. Sonido cristalino, servicio excepcional y tecnología de vanguardia.</p>
-                <button class="hero-cta" onclick="scrollToSection('precios')">Cotiza tu evento ahora</button>
-            </div>
+  <!-- Hero Section -->
+  <section class="hero" id="inicio">
+    <div class="container">
+      <div class="hero-content">
+        <h1>Sonido profesional para eventos</h1>
+        <p>Alquila equipos de audio de alta calidad para conciertos, eventos corporativos, bodas y producciones. Sonido
+          cristalino, servicio excepcional y tecnología de vanguardia.</p>
+        <button class="hero-cta" onclick="scrollToSection('precios')">Cotiza tu evento ahora</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="features" id="equipos">
+    <div class="container">
+      <h2 class="section-title fade-in">Equipos profesionales para cada ocasión</h2>
+      <div class="features-grid">
+        <div class="feature-card fade-in">
+          <div class="feature-icon">🎤</div>
+          <h3>Sistemas de Sonorización</h3>
+          <p>Altavoces, amplificadores y mezcladores de las mejores marcas. Desde eventos íntimos hasta grandes
+            conciertos con capacidad para miles de personas.</p>
         </div>
-    </section>
-
-    <!-- Features Section -->
-    <section class="features" id="equipos">
-        <div class="container">
-            <h2 class="section-title fade-in">Equipos profesionales para cada ocasión</h2>
-            <div class="features-grid">
-                <div class="feature-card fade-in">
-                    <div class="feature-icon">🎤</div>
-                    <h3>Sistemas de Sonorización</h3>
-                    <p>Altavoces, amplificadores y mezcladores de las mejores marcas. Desde eventos íntimos hasta grandes conciertos con capacidad para miles de personas.</p>
-                </div>
-                <div class="feature-card fade-in">
-                    <div class="feature-icon">🎧</div>
-                    <h3>Microfonía Profesional</h3>
-                    <p>Micrófonos inalámbricos, de condensador y dinámicos. Sistemas de monitoreo in-ear y auriculares de estudio para grabaciones perfectas.</p>
-                </div>
-                <div class="feature-card fade-in">
-                    <div class="feature-icon">🎵</div>
-                    <h3>Equipos de DJ y Producción</h3>
-                    <p>Controladoras, tornamesas, software profesional y cabinas de DJ completas. Todo lo necesario para sets memorables.</p>
-                </div>
-                <div class="feature-card fade-in">
-                    <div class="feature-icon">🔧</div>
-                    <h3>Servicio Técnico Completo</h3>
-                    <p>Instalación, configuración y soporte técnico durante todo tu evento. Nuestros ingenieros de sonido garantizan la calidad perfecta.</p>
-                </div>
-            </div>
+        <div class="feature-card fade-in">
+          <div class="feature-icon">🎧</div>
+          <h3>Microfonía Profesional</h3>
+          <p>Micrófonos inalámbricos, de condensador y dinámicos. Sistemas de monitoreo in-ear y auriculares de estudio
+            para grabaciones perfectas.</p>
         </div>
-    </section>
-
-    <!-- Testimonials Section -->
-    <section class="testimonials" id="testimonios">
-        <div class="container">
-            <h2 class="section-title fade-in">Clientes satisfechos en cada evento</h2>
-            <div class="testimonials-grid">
-                <div class="testimonial-card fade-in">
-                    <div class="testimonial-text">"El sonido de nuestra boda fue absolutamente perfecto. once8 superó todas nuestras expectativas y el servicio fue impecable."</div>
-                    <div class="testimonial-author">María González</div>
-                    <div class="testimonial-role">Organizadora de Eventos</div>
-                </div>
-                <div class="testimonial-card fade-in">
-                    <div class="testimonial-text">"Para nuestro concierto al aire libre necesitábamos equipos potentes y confiables. once8 nos brindó exactamente lo que necesitábamos."</div>
-                    <div class="testimonial-author">Carlos Rodríguez</div>
-                    <div class="testimonial-role">Productor Musical</div>
-                </div>
-                <div class="testimonial-card fade-in">
-                    <div class="testimonial-text">"Profesionalismo excepcional y equipos de primera calidad. Siempre confiamos en once8 para nuestros eventos corporativos."</div>
-                    <div class="testimonial-author">Ana Martínez</div>
-                    <div class="testimonial-role">Gerente de Marketing, TechCorp</div>
-                </div>
-            </div>
+        <div class="feature-card fade-in">
+          <div class="feature-icon">🎵</div>
+          <h3>Equipos de DJ y Producción</h3>
+          <p>Controladoras, tornamesas, software profesional y cabinas de DJ completas. Todo lo necesario para sets
+            memorables.</p>
         </div>
-    </section>
-
-    <!-- Pricing Section -->
-    <section class="pricing" id="precios">
-        <div class="container">
-            <h2 class="section-title fade-in">Paquetes para cada tipo de evento</h2>
-            <div class="pricing-grid">
-                <div class="pricing-card fade-in">
-                    <h3>Básico</h3>
-                    <div class="pricing-price">$150</div>
-                    <div class="pricing-period">por día</div>
-                    <ul class="pricing-features">
-                        <li>2 altavoces activos</li>
-                        <li>1 micrófono inalámbrico</li>
-                        <li>Mixer básico</li>
-                        <li>Cables y soportes</li>
-                        <li>Ideal para 50-100 personas</li>
-                    </ul>
-                    <button class="pricing-button">Reservar ahora</button>
-                </div>
-                <div class="pricing-card popular fade-in">
-                    <h3>Profesional</h3>
-                    <div class="pricing-price">$350</div>
-                    <div class="pricing-period">por día</div>
-                    <ul class="pricing-features">
-                        <li>Sistema line array completo</li>
-                        <li>4 micrófonos inalámbricos</li>
-                        <li>Mesa de mezclas digital</li>
-                        <li>Monitoreo profesional</li>
-                        <li>Técnico de sonido incluido</li>
-                        <li>Ideal para 200-500 personas</li>
-                    </ul>
-                    <button class="pricing-button">Más solicitado</button>
-                </div>
-                <div class="pricing-card fade-in">
-                    <h3>Premium</h3>
-                    <div class="pricing-price">$750</div>
-                    <div class="pricing-period">por día</div>
-                    <ul class="pricing-features">
-                        <li>Sistema de sonido completo</li>
-                        <li>Microfonía ilimitada</li>
-                        <li>Equipos de DJ profesional</li>
-                        <li>Iluminación básica</li>
-                        <li>2 técnicos especializados</li>
-                        <li>Ideal para +500 personas</li>
-                    </ul>
-                    <button class="pricing-button">Cotizar evento</button>
-                </div>
-            </div>
+        <div class="feature-card fade-in">
+          <div class="feature-icon">🔧</div>
+          <h3>Servicio Técnico Completo</h3>
+          <p>Instalación, configuración y soporte técnico durante todo tu evento. Nuestros ingenieros de sonido
+            garantizan la calidad perfecta.</p>
         </div>
-    </section>
+      </div>
+    </div>
+  </section>
 
-    <!-- Final CTA -->
-    <section class="final-cta">
-        <div class="container">
-            <h2 class="fade-in">¿Listo para hacer que tu evento suene increíble?</h2>
-            <p class="fade-in">Más de 500 eventos exitosos nos respaldan</p>
-            <button class="cta-button fade-in" onclick="startTrial()">Solicita tu cotización gratuita</button>
+  <!-- Testimonials Section -->
+  <section class="testimonials" id="testimonios">
+    <div class="container">
+      <h2 class="section-title fade-in">Clientes satisfechos en cada evento</h2>
+      <div class="testimonials-grid">
+        <div class="testimonial-card fade-in">
+          <div class="testimonial-text">"El sonido de nuestra boda fue absolutamente perfecto. once8 superó todas
+            nuestras expectativas y el servicio fue impecable."</div>
+          <div class="testimonial-author">María González</div>
+          <div class="testimonial-role">Organizadora de Eventos</div>
         </div>
-    </section>
-
-    <!-- Footer -->
-    <footer id="contacto">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h3>once8</h3>
-                    <p>El mejor sonido para tus eventos más importantes.</p>
-                    <div class="social-icons">
-                        <a href="#" class="social-icon">📘</a>
-                        <a href="#" class="social-icon">🐦</a>
-                        <a href="#" class="social-icon">💼</a>
-                        <a href="#" class="social-icon">📷</a>
-                    </div>
-                </div>
-                <div class="footer-section">
-                    <h3>Servicios</h3>
-                    <ul>
-                        <li><a href="#">Alquiler de Equipos</a></li>
-                        <li><a href="#">Servicio Técnico</a></li>
-                        <li><a href="#">Instalación</a></li>
-                        <li><a href="#">Mantenimiento</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section">
-                    <h3>Empresa</h3>
-                    <ul>
-                        <li><a href="#">Sobre nosotros</a></li>
-                        <li><a href="#">Carreras</a></li>
-                        <li><a href="#">Blog</a></li>
-                        <li><a href="#">Prensa</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section">
-                    <h3>Soporte</h3>
-                    <ul>
-                        <li><a href="#">Centro de ayuda</a></li>
-                        <li><a href="#">Contacto</a></li>
-                        <li><a href="#">Estado del servicio</a></li>
-                        <li><a href="#">Términos de servicio</a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; 2025 once8. Todos los derechos reservados.</p>
-            </div>
+        <div class="testimonial-card fade-in">
+          <div class="testimonial-text">"Para nuestro concierto al aire libre necesitábamos equipos potentes y
+            confiables. once8 nos brindó exactamente lo que necesitábamos."</div>
+          <div class="testimonial-author">Carlos Rodríguez</div>
+          <div class="testimonial-role">Productor Musical</div>
         </div>
-    </footer>
+        <div class="testimonial-card fade-in">
+          <div class="testimonial-text">"Profesionalismo excepcional y equipos de primera calidad. Siempre confiamos en
+            once8 para nuestros eventos corporativos."</div>
+          <div class="testimonial-author">Ana Martínez</div>
+          <div class="testimonial-role">Gerente de Marketing, TechCorp</div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-    <script>
-        // Smooth scrolling for navigation links
-        function scrollToSection(sectionId) {
-            const section = document.getElementById(sectionId);
-            if (section) {
-                section.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
-                });
-            }
+  <!-- Pricing Section -->
+  <section class="pricing" id="precios">
+    <div class="container">
+      <h2 class="section-title fade-in">Paquetes para cada tipo de evento</h2>
+      <div class="pricing-grid">
+        <div class="pricing-card fade-in">
+          <h3>Básico</h3>
+          <div class="pricing-price">$150</div>
+          <div class="pricing-period">por día</div>
+          <ul class="pricing-features">
+            <li>2 altavoces activos</li>
+            <li>1 micrófono inalámbrico</li>
+            <li>Mixer básico</li>
+            <li>Cables y soportes</li>
+            <li>Ideal para 50-100 personas</li>
+          </ul>
+          <button class="pricing-button">Reservar ahora</button>
+        </div>
+        <div class="pricing-card popular fade-in">
+          <h3>Profesional</h3>
+          <div class="pricing-price">$350</div>
+          <div class="pricing-period">por día</div>
+          <ul class="pricing-features">
+            <li>Sistema line array completo</li>
+            <li>4 micrófonos inalámbricos</li>
+            <li>Mesa de mezclas digital</li>
+            <li>Monitoreo profesional</li>
+            <li>Técnico de sonido incluido</li>
+            <li>Ideal para 200-500 personas</li>
+          </ul>
+          <button class="pricing-button">Más solicitado</button>
+        </div>
+        <div class="pricing-card fade-in">
+          <h3>Premium</h3>
+          <div class="pricing-price">$750</div>
+          <div class="pricing-period">por día</div>
+          <ul class="pricing-features">
+            <li>Sistema de sonido completo</li>
+            <li>Microfonía ilimitada</li>
+            <li>Equipos de DJ profesional</li>
+            <li>Iluminación básica</li>
+            <li>2 técnicos especializados</li>
+            <li>Ideal para +500 personas</li>
+          </ul>
+          <button class="pricing-button">Cotizar evento</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Final CTA -->
+  <section class="final-cta">
+    <div class="container">
+      <h2 class="fade-in">¿Listo para hacer que tu evento suene increíble?</h2>
+      <p class="fade-in">Más de 500 eventos exitosos nos respaldan</p>
+      <button class="cta-button fade-in" onclick="startTrial()">Solicita tu cotización gratuita</button>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer id="contacto">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h3>once8</h3>
+          <p>El mejor sonido para tus eventos más importantes.</p>
+          <div class="social-icons">
+            <a href="#" class="social-icon">📘</a>
+            <a href="#" class="social-icon">🐦</a>
+            <a href="#" class="social-icon">💼</a>
+            <a href="#" class="social-icon">📷</a>
+          </div>
+        </div>
+        <div class="footer-section">
+          <h3>Servicios</h3>
+          <ul>
+            <li><a href="#">Alquiler de Equipos</a></li>
+            <li><a href="#">Servicio Técnico</a></li>
+            <li><a href="#">Instalación</a></li>
+            <li><a href="#">Mantenimiento</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h3>Empresa</h3>
+          <ul>
+            <li><a href="#">Sobre nosotros</a></li>
+            <li><a href="#">Carreras</a></li>
+            <li><a href="#">Blog</a></li>
+            <li><a href="#">Prensa</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h3>Soporte</h3>
+          <ul>
+            <li><a href="#">Centro de ayuda</a></li>
+            <li><a href="#">Contacto</a></li>
+            <li><a href="#">Estado del servicio</a></li>
+            <li><a href="#">Términos de servicio</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 once8. Todos los derechos reservados.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Smooth scrolling for navigation links
+    function scrollToSection(sectionId) {
+      const section = document.getElementById(sectionId);
+      if (section) {
+        section.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        });
+      }
+    }
+
+    // Add click listeners to navigation links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const targetId = this.getAttribute('href').substring(1);
+        scrollToSection(targetId);
+      });
+    });
+
+    // Scroll animations
+    function animateOnScroll() {
+      const elements = document.querySelectorAll('.fade-in');
+
+      elements.forEach(element => {
+        const elementTop = element.getBoundingClientRect().top;
+        const elementVisible = 150;
+
+        if (elementTop < window.innerHeight - elementVisible) {
+          element.classList.add('visible');
         }
+      });
+    }
 
-        // Add click listeners to navigation links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const targetId = this.getAttribute('href').substring(1);
-                scrollToSection(targetId);
-            });
+    // Header background change on scroll
+    function handleHeaderScroll() {
+      const header = document.querySelector('header');
+      if (window.scrollY > 100) {
+        header.style.background = 'rgba(255, 255, 255, 0.98)';
+        header.style.boxShadow = '0 2px 20px rgba(0, 0, 0, 0.1)';
+      } else {
+        header.style.background = 'rgba(255, 255, 255, 0.95)';
+        header.style.boxShadow = 'none';
+      }
+    }
+
+    // Mobile menu toggle
+    function setupMobileMenu() {
+      const mobileMenu = document.querySelector('.mobile-menu');
+      const navLinks = document.querySelector('.nav-links');
+
+      mobileMenu.addEventListener('click', () => {
+        navLinks.style.display = navLinks.style.display === 'flex' ? 'none' : 'flex';
+        navLinks.style.position = 'absolute';
+        navLinks.style.top = '100%';
+        navLinks.style.left = '0';
+        navLinks.style.right = '0';
+        navLinks.style.background = 'white';
+        navLinks.style.flexDirection = 'column';
+        navLinks.style.padding = '1rem';
+        navLinks.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.1)';
+      });
+    }
+
+    // CTA button actions
+    function startTrial() {
+      alert('¡Perfecto! Te contactaremos en las próximas 24 horas para discutir los detalles de tu evento.');
+      // Here you would typically redirect to a contact form
+      // window.location.href = '/contact';
+    }
+
+    // Pricing card interactions
+    function setupPricingCards() {
+      const pricingButtons = document.querySelectorAll('.pricing-button');
+
+      pricingButtons.forEach((button, index) => {
+        button.addEventListener('click', () => {
+          const plans = ['Básico', 'Profesional', 'Premium'];
+          const planName = plans[index];
+
+          if (planName === 'Premium') {
+            alert(`Nos pondremos en contacto contigo para discutir tu evento ${planName}.`);
+          } else {
+            alert(`Has seleccionado el paquete ${planName}. Te contactaremos para confirmar disponibilidad.`);
+          }
+        });
+      });
+    }
+
+    // Parallax effect for hero section
+    function setupParallax() {
+      window.addEventListener('scroll', () => {
+        const scrolled = window.pageYOffset;
+        const hero = document.querySelector('.hero');
+        if (hero) {
+          hero.style.transform = `translateY(${scrolled * 0.5}px)`;
+        }
+      });
+    }
+
+    // Feature cards hover effects
+    function setupFeatureCards() {
+      const featureCards = document.querySelectorAll('.feature-card');
+
+      featureCards.forEach(card => {
+        card.addEventListener('mouseenter', () => {
+          card.style.transform = 'translateY(-10px) scale(1.02)';
         });
 
-        // Scroll animations
-        function animateOnScroll() {
-            const elements = document.querySelectorAll('.fade-in');
-            
-            elements.forEach(element => {
-                const elementTop = element.getBoundingClientRect().top;
-                const elementVisible = 150;
-                
-                if (elementTop < window.innerHeight - elementVisible) {
-                    element.classList.add('visible');
-                }
-            });
-        }
-
-        // Header background change on scroll
-        function handleHeaderScroll() {
-            const header = document.querySelector('header');
-            if (window.scrollY > 100) {
-                header.style.background = 'rgba(255, 255, 255, 0.98)';
-                header.style.boxShadow = '0 2px 20px rgba(0, 0, 0, 0.1)';
-            } else {
-                header.style.background = 'rgba(255, 255, 255, 0.95)';
-                header.style.boxShadow = 'none';
-            }
-        }
-
-        // Mobile menu toggle
-        function setupMobileMenu() {
-            const mobileMenu = document.querySelector('.mobile-menu');
-            const navLinks = document.querySelector('.nav-links');
-            
-            mobileMenu.addEventListener('click', () => {
-                navLinks.style.display = navLinks.style.display === 'flex' ? 'none' : 'flex';
-                navLinks.style.position = 'absolute';
-                navLinks.style.top = '100%';
-                navLinks.style.left = '0';
-                navLinks.style.right = '0';
-                navLinks.style.background = 'white';
-                navLinks.style.flexDirection = 'column';
-                navLinks.style.padding = '1rem';
-                navLinks.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.1)';
-            });
-        }
-
-        // CTA button actions
-        function startTrial() {
-            alert('¡Perfecto! Te contactaremos en las próximas 24 horas para discutir los detalles de tu evento.');
-            // Here you would typically redirect to a contact form
-            // window.location.href = '/contact';
-        }
-
-        // Pricing card interactions
-        function setupPricingCards() {
-            const pricingButtons = document.querySelectorAll('.pricing-button');
-            
-            pricingButtons.forEach((button, index) => {
-                button.addEventListener('click', () => {
-                    const plans = ['Básico', 'Profesional', 'Premium'];
-                    const planName = plans[index];
-                    
-                    if (planName === 'Premium') {
-                        alert(`Nos pondremos en contacto contigo para discutir tu evento ${planName}.`);
-                    } else {
-                        alert(`Has seleccionado el paquete ${planName}. Te contactaremos para confirmar disponibilidad.`);
-                    }
-                });
-            });
-        }
-
-        // Parallax effect for hero section
-        function setupParallax() {
-            window.addEventListener('scroll', () => {
-                const scrolled = window.pageYOffset;
-                const hero = document.querySelector('.hero');
-                if (hero) {
-                    hero.style.transform = `translateY(${scrolled * 0.5}px)`;
-                }
-            });
-        }
-
-        // Feature cards hover effects
-        function setupFeatureCards() {
-            const featureCards = document.querySelectorAll('.feature-card');
-            
-            featureCards.forEach(card => {
-                card.addEventListener('mouseenter', () => {
-                    card.style.transform = 'translateY(-10px) scale(1.02)';
-                });
-                
-                card.addEventListener('mouseleave', () => {
-                    card.style.transform = 'translateY(0) scale(1)';
-                });
-            });
-        }
-
-        // Initialize all functionality
-        document.addEventListener('DOMContentLoaded', function() {
-            // Set up scroll events
-            window.addEventListener('scroll', () => {
-                animateOnScroll();
-                handleHeaderScroll();
-            });
-            
-            // Initialize components
-            setupMobileMenu();
-            setupPricingCards();
-            setupParallax();
-            setupFeatureCards();
-            
-            // Trigger initial animation check
-            animateOnScroll();
-            
-            // Add loading animation
-            document.body.style.opacity = '0';
-            setTimeout(() => {
-                document.body.style.transition = 'opacity 0.5s ease';
-                document.body.style.opacity = '1';
-            }, 100);
+        card.addEventListener('mouseleave', () => {
+          card.style.transform = 'translateY(0) scale(1)';
         });
+      });
+    }
 
-        // Easter egg - Konami code
-        let konamiCode = [];
-        const konamiSequence = [38, 38, 40, 40, 37, 39, 37, 39, 66, 65];
-        
-        document.addEventListener('keydown', (e) => {
-            konamiCode.push(e.keyCode);
-            if (konamiCode.length > konamiSequence.length) {
-                konamiCode.shift();
-            }
-            
-            if (konamiCode.join(',') === konamiSequence.join(',')) {
-                document.body.style.transform = 'rotate(360deg)';
-                document.body.style.transition = 'transform 2s ease';
-                setTimeout(() => {
-                    document.body.style.transform = 'none';
-                    alert('🎉 ¡Has encontrado el easter egg! Disfruta de un descuento especial del 20%');
-                }, 2000);
-                konamiCode = [];
-            }
-        });
-    </script>
+    // Initialize all functionality
+    document.addEventListener('DOMContentLoaded', function () {
+      // Set up scroll events
+      window.addEventListener('scroll', () => {
+        animateOnScroll();
+        handleHeaderScroll();
+      });
+
+      // Initialize components
+      setupMobileMenu();
+      setupPricingCards();
+      setupParallax();
+      setupFeatureCards();
+
+      // Trigger initial animation check
+      animateOnScroll();
+
+      // Add loading animation
+      document.body.style.opacity = '0';
+      setTimeout(() => {
+        document.body.style.transition = 'opacity 0.5s ease';
+        document.body.style.opacity = '1';
+      }, 100);
+    });
+
+    // Easter egg - Konami code
+    let konamiCode = [];
+    const konamiSequence = [38, 38, 40, 40, 37, 39, 37, 39, 66, 65];
+
+    document.addEventListener('keydown', (e) => {
+      konamiCode.push(e.keyCode);
+      if (konamiCode.length > konamiSequence.length) {
+        konamiCode.shift();
+      }
+
+      if (konamiCode.join(',') === konamiSequence.join(',')) {
+        document.body.style.transform = 'rotate(360deg)';
+        document.body.style.transition = 'transform 2s ease';
+        setTimeout(() => {
+          document.body.style.transform = 'none';
+          alert('🎉 ¡Has encontrado el easter egg! Disfruta de un descuento especial del 20%');
+        }, 2000);
+        konamiCode = [];
+      }
+    });
+  </script>
 </body>
+
 </html>
